@@ -1,4 +1,4 @@
-﻿namespace Books.Domain;
+﻿namespace Test.Domain;
 
 public class Book
 {
@@ -6,6 +6,6 @@ public class Book
 	public string Title { get; set; } = string.Empty;
 	public string Description { get; set; } = string.Empty;
 	public Genre Genre { get; set; } = Genre.None;
-	
+
 	public Author Author { get; set; }
 }
