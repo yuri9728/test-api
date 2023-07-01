@@ -1,4 +1,4 @@
-﻿namespace Books.Domain;
+﻿namespace Test.Domain;
 
 public class User
 {
