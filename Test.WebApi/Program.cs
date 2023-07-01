@@ -1,4 +1,5 @@
 using Test.Infrastructure.DbContexts;
+using Test.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,5 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapBookEndpoints();
 
 app.Run();
