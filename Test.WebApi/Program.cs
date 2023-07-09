@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var postgresConnectionString = builder.Configuration.GetConnectionString("POSTGRESQL");
+var postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQL");
 
 builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 	=> npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
