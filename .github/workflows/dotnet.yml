@@ -8,6 +8,7 @@ on:
 
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
@@ -39,6 +40,33 @@ jobs:
       with:
         name: dotnet-test-results-${{ matrix.dotnet-version }}
         path: TestResults-${{ matrix.dotnet-version }}
+
+  delivery:
+    
+    needs: build
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '7.x' ]
+
+    steps:
+      - uses: actions/checkout@v3
+  
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+  
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: crpla4r64c1a9u3kddh9
+          CR_REPOSITORY: testapi
+          IMAGE_TAG: ${{ github.sha }}
+        run: | 
+          docker build -f "Test.WebApi/Dockerfile" -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG ./
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
         
 
 
