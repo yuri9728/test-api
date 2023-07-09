@@ -19,8 +19,7 @@ builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 
 builder.Services.AddTransient<BookMapper>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOpenApi();
 
 var app = builder.Build();
 
