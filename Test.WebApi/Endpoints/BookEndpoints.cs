@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Test.Application.DTOs;
+using Test.Application.Mappers;
 using Test.Domain;
 using Test.Infrastructure.DbContexts;
 
@@ -26,28 +28,35 @@ public static class BookEndpoints
 		return builder;
 	}
 
-	private static async Task<Created<Book>> CreateBook(AppDbContext db, Book book)
+	private static async Task<Created<BookResponse>> CreateBook(AppDbContext db, BookMapper bookMapper, CreateBookRequest createBookRequest)
 	{
-		await db.Books.AddAsync(book);
+		Book book = bookMapper.MapToBook(createBookRequest);
 
+		db.Authors.Attach(book.Author);
+		
+		await db.Books.AddAsync(book);
 		await db.SaveChangesAsync();
 
-		return TypedResults.Created($"books/{book.Id}", book);
+		BookResponse bookResponse = bookMapper.MapToBookResponse(book);
+
+		return TypedResults.Created($"books/{bookResponse.Id}", bookResponse);
 	}
 
-	private static async Task<Results<Ok<Book[]>, NoContent>> GetBooks(AppDbContext db)
+	private static async Task<Results<Ok<BookResponse[]>, NoContent>> GetBooks(AppDbContext db, BookMapper bookMapper)
 	{
 		Book[] books = await db.Books.ToArrayAsync();
 
+		BookResponse[] bookDtos = books.Select(bookMapper.MapToBookResponse).ToArray();
+
 		if (books.Any())
 		{
-			return TypedResults.Ok(books);
+			return TypedResults.Ok(bookDtos);
 		}
 
 		return TypedResults.NoContent();
 	}
 
-	private static async Task<Results<Ok<Book>, NotFound>> GetBook(AppDbContext db, Guid id)
+	private static async Task<Results<Ok<BookResponse>, NotFound>> GetBook(AppDbContext db, BookMapper bookMapper, Guid id)
 	{
 		Book? book = await db.Books.FindAsync(id);
 
@@ -56,6 +65,8 @@ public static class BookEndpoints
 			return TypedResults.NotFound();
 		}
 
-		return TypedResults.Ok(book);
+		BookResponse bookResponse = bookMapper.MapToBookResponse(book);
+
+		return TypedResults.Ok(bookResponse);
 	}
 }
