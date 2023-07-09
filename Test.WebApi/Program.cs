@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Test.Application.Mappers;
 using Test.Infrastructure.DbContexts;
 using Test.WebApi.Endpoints;
 
@@ -17,6 +19,8 @@ var postgresConnectionString = builder.Configuration.GetConnectionString("Postgr
 
 builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 	=> npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
+
+builder.Services.AddTransient<BookMapper>();
 
 var app = builder.Build();
 
