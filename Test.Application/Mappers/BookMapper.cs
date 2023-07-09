@@ -19,7 +19,7 @@ public partial class BookMapper
 	[MapperIgnoreSource(nameof(Book.Author))]
 	public partial BookResponse MapToBookResponse(Book book);
 
-	[MapperIgnoreSource(nameof(CreateBookRequest.AuthorId))]
-	[MapperIgnoreTarget(nameof(Book.Author))]
+	[MapperIgnoreTarget(nameof(Book.Id))]
+	[MapperIgnoreSource(nameof(CreateBookRequest.AuthorId)), MapperIgnoreTarget(nameof(Book.Author))]
 	private partial Book CreateBookRequestToBook(CreateBookRequest createBookRequest);
 }
