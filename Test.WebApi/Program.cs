@@ -3,6 +3,11 @@ using Test.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PORT")))
+{
+	builder.WebHost.UseUrls($"http://+:{Environment.GetEnvironmentVariable("PORT")}");
+}
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
