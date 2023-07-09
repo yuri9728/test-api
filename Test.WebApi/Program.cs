@@ -1,30 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using Test.Application.Mappers;
 using Test.Infrastructure.DbContexts;
+using Test.WebApi.Configurations;
 using Test.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PORT")))
+// For Yandex Cloud deployment
+string? port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
 {
-	builder.WebHost.UseUrls($"http://+:{Environment.GetEnvironmentVariable("PORT")}");
+	builder.WebHost.UseUrls($"http://+:{port}");
 }
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQL");
-
+string? postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQL");
 builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 	=> npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
 
 builder.Services.AddTransient<BookMapper>();
 
+builder.Services.ConfigureOpenApi();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
