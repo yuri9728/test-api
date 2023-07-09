@@ -23,6 +23,9 @@ public static class BookEndpoints
 		group.MapGet("/{id}", GetBook)
 			.WithName(nameof(GetBook));
 
+		group.MapDelete("/{id}", DeleteBook)
+			.WithName(nameof(DeleteBook));
+
 		group.WithOpenApi();
 
 		return builder;
@@ -68,5 +71,20 @@ public static class BookEndpoints
 		BookResponse bookResponse = bookMapper.MapToBookResponse(book);
 
 		return TypedResults.Ok(bookResponse);
+	}
+
+	private static async Task<Results<NoContent, NotFound>> DeleteBook(AppDbContext db, Guid id)
+	{
+		Book? book = await db.Books.FindAsync(id);
+
+		if (book is null)
+		{
+			return TypedResults.NotFound();
+		}
+
+		db.Books.Remove(book);
+		await db.SaveChangesAsync();
+
+		return TypedResults.NoContent();
 	}
 }
