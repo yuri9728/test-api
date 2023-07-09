@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Riok.Mapperly" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Test.Domain\Test.Domain.csproj" />
   </ItemGroup>
 
