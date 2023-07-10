@@ -16,7 +16,8 @@ public static class UserEndpoints
 			.WithOpenApi();
 
 		group.MapPost("/", CreateUser)
-			.WithName(nameof(CreateUser));
+			.WithName(nameof(CreateUser))
+			.AllowAnonymous();
 
 		group.MapGet("/", GetUsers)
 			.WithName(nameof(GetUsers));

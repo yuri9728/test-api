@@ -14,15 +14,14 @@ public static class AuthenticationConfiguration
 			securityToken,
 			validationParameter) => DateTime.UtcNow <= expires);
 
-		string? key = configuration["Secrets:SecurityKey"];
-		ArgumentException.ThrowIfNullOrEmpty(key);
+		string? encryptionKey = configuration["Secrets:SecurityKey"];
+		ArgumentException.ThrowIfNullOrEmpty(encryptionKey);
 
 		TokenValidationParameters tokenValidationParameters = new()
 		{
 			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-			ValidateIssuer = true,
-			ValidIssuer = Environment.MachineName,
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(encryptionKey)),
+			ValidateIssuer = false,
 			ValidateAudience = false,
 			ValidateLifetime = true,
 			LifetimeValidator = lifetimeValidator
