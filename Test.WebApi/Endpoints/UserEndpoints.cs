@@ -39,15 +39,13 @@ public static class UserEndpoints
 		return TypedResults.Created($"users/{userResponse.Id}", userResponse);
 	}
 
-	private static async Task<Results<Ok<UserResponse[]>, NoContent>> GetUsers(AppDbContext db, UserMapper bookMapper)
+	private static async Task<Results<Ok<UserResponse[]>, NoContent>> GetUsers(AppDbContext db)
 	{
-		User[] users = await db.Users.ToArrayAsync();
+		UserResponse[] userDtos = await db.Users.MapToUserResponse().ToArrayAsync();
 
-		UserResponse[] bookDtos = users.Select(bookMapper.MapToUserResponse).ToArray();
-
-		if (users.Any())
+		if (userDtos.Any())
 		{
-			return TypedResults.Ok(bookDtos);
+			return TypedResults.Ok(userDtos);
 		}
 
 		return TypedResults.NoContent();

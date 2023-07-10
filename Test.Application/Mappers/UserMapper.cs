@@ -15,3 +15,11 @@ public partial class UserMapper
 	[MapperIgnoreSource(nameof(User.PasswordHash))]
 	public partial UserResponse MapToUserResponse(User user);
 }
+
+[Mapper]
+public static partial class UserMapperExtensions
+{
+	[MapperIgnoreSource(nameof(User.Login))]
+	[MapperIgnoreSource(nameof(User.PasswordHash))]
+	public static partial IQueryable<UserResponse> MapToUserResponse(this IQueryable<User> users);
+}

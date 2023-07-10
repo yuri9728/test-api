@@ -39,11 +39,9 @@ public static class AuthorEndpoints
 		return TypedResults.Created($"authors/{authorResponse.Id}", authorResponse);
 	}
 
-	private static async Task<Results<Ok<AuthorResponse[]>, NoContent>> GetAuthors(AppDbContext db, AuthorMapper authorMapper)
+	private static async Task<Results<Ok<AuthorResponse[]>, NoContent>> GetAuthors(AppDbContext db)
 	{
-		Author[] authors = await db.Authors.ToArrayAsync();
-
-		AuthorResponse[] authorDtos = authors.Select(authorMapper.MapToAuthorResponse).ToArray();
+		AuthorResponse[] authorDtos = await db.Authors.MapToAuthorResponse().ToArrayAsync();
 
 		if (authorDtos.Any())
 		{

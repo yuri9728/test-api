@@ -15,3 +15,10 @@ public partial class AuthorMapper
 	[MapperIgnoreSource(nameof(Author.Books))]
 	public partial AuthorResponse MapToAuthorResponse(Author author);
 }
+
+[Mapper]
+public static partial class AuthorMapperExtensions
+{
+	[MapperIgnoreSource(nameof(Book.Author))]
+	public static partial IQueryable<AuthorResponse> MapToAuthorResponse(this IQueryable<Author> authors);
+}
