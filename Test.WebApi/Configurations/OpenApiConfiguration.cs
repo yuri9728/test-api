@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace Test.WebApi.Configurations;
 
@@ -9,7 +10,7 @@ public static class OpenApiConfiguration
 		OpenApiInfo openApiInfo = new()
 		{
 			Title = "Test API",
-			Version = "v 0.0.1",
+			Version = "v1",
 			Description = "API for test task"
 		};
 
@@ -20,7 +21,7 @@ public static class OpenApiConfiguration
 			Name = "Authorization",
 			Type = SecuritySchemeType.Http,
 			BearerFormat = "JWT",
-			Scheme = "bearer"
+			Scheme = JwtBearerDefaults.AuthenticationScheme
 		};
 
 		OpenApiSecurityRequirement openApiSecurityRequirement = new()

@@ -28,16 +28,14 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseSwagger();
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
 	app.UseSwaggerUI();
 }
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseHttpsRedirection();
 
 app.MapAuthenticationEndpoints()
 	.MapUserEndpoints()
