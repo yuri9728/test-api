@@ -12,7 +12,8 @@ public static class BookEndpoints
 	public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder builder)
 	{
 		var group = builder.MapGroup("/books")
-			.WithTags(nameof(Book) + 's');
+			.WithTags(nameof(Book) + 's')
+			.WithOpenApi();
 
 		group.MapPost("/", CreateBook)
 			.WithName(nameof(CreateBook));
@@ -25,8 +26,6 @@ public static class BookEndpoints
 
 		group.MapDelete("/{id}", DeleteBook)
 			.WithName(nameof(DeleteBook));
-
-		group.WithOpenApi();
 
 		return builder;
 	}

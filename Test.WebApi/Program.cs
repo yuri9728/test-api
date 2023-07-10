@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Test.Application.Mappers;
+using Test.Domain;
 using Test.Infrastructure.DbContexts;
 using Test.WebApi.Configurations;
 using Test.WebApi.Endpoints;
@@ -31,6 +32,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapBookEndpoints();
+app.MapBookEndpoints().MapAuthenticationEndpoints();
 
 app.Run();
