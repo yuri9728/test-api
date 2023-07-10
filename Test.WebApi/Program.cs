@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Test.Application.Mappers;
-using Test.Domain;
 using Test.Infrastructure.DbContexts;
 using Test.WebApi.Configurations;
 using Test.WebApi.Endpoints;
@@ -20,7 +19,10 @@ builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 
 builder.Services.AddTransient<BookMapper>();
 
-builder.Services.ConfigureOpenApi();
+builder.Services
+	.ConfigureAuthentication(builder.Configuration)
+	.ConfigureAuthorization()
+	.ConfigureOpenApi();
 
 var app = builder.Build();
 
@@ -29,6 +31,9 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
