@@ -36,7 +36,7 @@ public static class UserEndpoints
 
 		UserResponse userResponse = userMapper.MapToUserResponse(user);
 
-		return TypedResults.Created($"books/{userResponse.Id}", userResponse);
+		return TypedResults.Created($"users/{userResponse.Id}", userResponse);
 	}
 
 	private static async Task<Results<Ok<UserResponse[]>, NoContent>> GetUsers(AppDbContext db, UserMapper bookMapper)
