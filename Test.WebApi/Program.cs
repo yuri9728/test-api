@@ -18,6 +18,7 @@ builder.Services.AddNpgsql<AppDbContext>(postgresConnectionString, npgsqlOptions
 	=> npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
 
 builder.Services.AddTransient<BookMapper>();
+builder.Services.AddTransient<UserMapper>();
 
 builder.Services
 	.ConfigureAuthentication(builder.Configuration)
@@ -37,6 +38,8 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-app.MapBookEndpoints().MapAuthenticationEndpoints();
+app.MapAuthenticationEndpoints()
+	.MapUserEndpoints()
+	.MapBookEndpoints();
 
 app.Run();
