@@ -23,3 +23,10 @@ public partial class BookMapper
 	[MapperIgnoreSource(nameof(CreateBookRequest.AuthorId)), MapperIgnoreTarget(nameof(Book.Author))]
 	private partial Book CreateBookRequestToBook(CreateBookRequest createBookRequest);
 }
+
+[Mapper]
+public static partial class BookMapperExtensions
+{
+	[MapperIgnoreSource(nameof(Book.Author))]
+	public static partial IQueryable<BookResponse> MapToBookResponse(this IQueryable<Book> books);
+}

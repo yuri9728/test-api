@@ -44,13 +44,11 @@ public static class BookEndpoints
 		return TypedResults.Created($"books/{bookResponse.Id}", bookResponse);
 	}
 
-	private static async Task<Results<Ok<BookResponse[]>, NoContent>> GetBooks(AppDbContext db, BookMapper bookMapper)
+	private static async Task<Results<Ok<BookResponse[]>, NoContent>> GetBooks(AppDbContext db)
 	{
-		Book[] books = await db.Books.ToArrayAsync();
+		BookResponse[] bookDtos = await db.Books.MapToBookResponse().ToArrayAsync();
 
-		BookResponse[] bookDtos = books.Select(bookMapper.MapToBookResponse).ToArray();
-
-		if (books.Any())
+		if (bookDtos.Any())
 		{
 			return TypedResults.Ok(bookDtos);
 		}
