@@ -37,6 +37,8 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/", () => "Test API").AllowAnonymous();
+
 app.MapAuthenticationEndpoints()
 	.MapUserEndpoints()
 	.MapAuthorEndpoints()
